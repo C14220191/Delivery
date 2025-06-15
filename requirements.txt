@@ -1,0 +1,4 @@
+nameko
+mysql-connector-python
+eventlet
+requests
