@@ -5,7 +5,7 @@ import requests
 from nameko.rpc import rpc
 from dependencies import Database
 
-ORS_API_KEY = "5b3ce3597851110001cf62485a0dda54bf0c42858ddaa3037a8ca880"  # Ganti dengan API key kamu
+ORS_API_KEY = ""  # Ganti dengan API key kamu
 GEOCODE_URL = "https://api.openrouteservice.org/geocode/search"
 DIRECTION_URL = "https://api.openrouteservice.org/v2/directions/driving-car"
 START_LAT = -7.339445712519114
