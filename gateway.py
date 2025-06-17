@@ -17,6 +17,26 @@ class GatewayService:
             return 200, json.dumps({"data": data})
         except Exception as e:
             return 500, json.dumps({"error": str(e)})
+        
+    @http('GET', '/delivery/<string:status>')
+    def get_delivery_by_status(self, request, status):
+        try:
+            data = self.delivery_rpc.getDataByStatus(status)
+            return 200, json.dumps({"data": data})
+        except Exception as e:
+            return 500, json.dumps({"error": str(e)})
+    
+    @http('GET', '/delivery/last')
+    def get_last_delivery_data(self, request):
+        try:
+            data = self.delivery_rpc.get_last_delivery_data()
+            if data:
+                return 200, json.dumps({"data": data}, indent=4)
+            else:
+                return 404, json.dumps({"error": "No delivery found"})
+        except Exception as e:
+            return 500, json.dumps({"error": str(e)})
+
 
     @http('GET', '/delivery/<int:delivery_id>')
     def get_delivery_by_id(self, request, delivery_id):
@@ -81,3 +101,12 @@ class GatewayService:
             return 200, json.dumps(result)
         except Exception as e:
             return 500, json.dumps({"error": str(e)})
+        
+    @http('DELETE', '/delivery/<int:delivery_id>')
+    def delete_delivery(self, request, delivery_id):
+        try:
+            result = self.delivery_rpc.delete_delivery(delivery_id)
+            return 200, json.dumps(result)
+        except Exception as e:
+            return 500, json.dumps({"error": str(e)})
+    

@@ -44,10 +44,16 @@ nameko run gateway --broker amqp://guest:guest@localhost
 ---
 # How to use?🤔
 dapat menggunakkan Postman,YARC!, atau sejenisnya.
+
+---
+---
 #### Get Method
     http://localhost:8000/delivery
     http://localhost:8000/delivery/<int:delivery_id>
         ex: http://localhost:8000/delivery/1
+
+---
+---
 
 #### Post Method
 Input menggunakkan Json Raw Body
@@ -58,10 +64,8 @@ http://localhost:8000/delivery  (create delivery)
                   "tujuan": "Jakarta",
                   "jarak": 320.5,
                   "notes": "kirim cepat",
-                  "harga_delivery": 50000,
                   "order_id": 1,
-                  "member_id": 3,
-                  "status": "pending"
+                  "member_id": 3
             }
 http://localhost:8000/search    (search place)
         json example:
@@ -75,13 +79,19 @@ http://localhost:8000/distance  (Get distance and estimation time)
           "lat": -6.2012,
           "lon": 106.7821
         }
+
+http://localhost:8000/delivery/last (Get last data)
+
+http://localhost:8000/delivery/<string:status> (get data by status, buat filter)
 ```
 
+---
+---
 #### PUT Method
 ```bash
 http://localhost:8000/delivery/<int:delivery_id>/status (edit status by id)
         json example:
-        { "status": "completed" }
+        {"status": "completed" }
         
 http://localhost:8000/delivery/<int:delivery_id>        (edit all data by id)
         json example:
@@ -96,7 +106,10 @@ http://localhost:8000/delivery/<int:delivery_id>        (edit all data by id)
         }
 ```
 ---
-**_NOTE:_** 
-📝 belum fix, masih kurang function untuk perhitungan harga (masih input manual untuk saat ini).
-📝kurang Get untuk fitur filter, masih didiskusikan
 ---
+
+#### DELETE
+```bash
+        http://localhost:8000/delivery/<int:delivery_id> (delete by id)
+---
+

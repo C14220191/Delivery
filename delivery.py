@@ -27,6 +27,18 @@ class DeliveryService:
     @rpc
     def create_delivery(self, data):
         return self.database.insert_delivery(data)
+    
+    @rpc
+    def getDataByStatus(self, status):
+        return self.database.getDataByStatus(status)
+    
+    @rpc
+    def delete_delivery(self, delivery_id):
+        return self.database.delete_delivery(delivery_id)
+    
+    @rpc
+    def get_last_delivery_data(self):
+        return self.database.get_last_delivery_data()
 
     @rpc
     def search_location(self, query):
