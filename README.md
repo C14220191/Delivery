@@ -99,7 +99,6 @@ http://localhost:8000/delivery/<int:delivery_id>        (edit all data by id)
           "tujuan": "Bandung",
           "jarak": 180,
           "notes": "ubah tujuan",
-          "harga_delivery": 40000,
           "order_id": 1,
           "member_id": 3,
           "status": "in_transit"
