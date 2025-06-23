@@ -1,11 +1,10 @@
 import eventlet
 eventlet.monkey_patch()
-
 import requests
 from nameko.rpc import rpc
 from dependencies import Database
 
-ORS_API_KEY = ""  # Ganti dengan API key kamu
+ORS_API_KEY = "5b3ce3597851110001cf62485a0dda54bf0c42858ddaa3037a8ca880"  # Ganti dengan API key kamu
 GEOCODE_URL = "https://api.openrouteservice.org/geocode/search"
 DIRECTION_URL = "https://api.openrouteservice.org/v2/directions/driving-car"
 START_LAT = -7.339445712519114
@@ -15,6 +14,26 @@ class DeliveryService:
     name = "delivery_service"
 
     database = Database()
+
+    @rpc
+    def get_delivery_by_order_id(self, order_id):
+        return self.database.get_delivery_by_order_id(order_id)
+    
+    @rpc
+    def get_delivery_by_member_id(self, member_id):
+        return self.database.get_delivery_by_member_id(member_id)
+    
+    @rpc
+    def search_delivery(self, query):
+        return self.database.search_delivery(query)
+    
+    @rpc
+    def append_employee(self, delivery_id, employee_id):
+        return self.database.append_employee(delivery_id, employee_id)
+    
+    @rpc
+    def fetch_all_delivery_by_employee_id(self, employee_id):
+        return self.database.get_delivery_by_employee_id(employee_id)
 
     @rpc
     def fetch_all_delivery(self):

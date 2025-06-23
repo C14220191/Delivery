@@ -20,6 +20,16 @@ class Database:
         cursor.execute("SELECT * FROM delivery WHERE id = %s", (delivery_id,))
         return cursor.fetchone()
     
+    def get_delivery_by_order_id(self, order_id):
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM delivery WHERE order_id = %s", (order_id,))
+        return cursor.fetchall()
+    
+    def get_delivery_by_member_id(self, member_id):
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM delivery WHERE member_id = %s", (member_id,))
+        return cursor.fetchall()
+    
     def getDataByStatus(self, status):
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM delivery WHERE status = %s", (status,))
@@ -32,8 +42,8 @@ class Database:
         harga_delivery = jarak * harga_per_km if jarak is not None else 0
 
         sql = """
-            INSERT INTO delivery (tujuan, jarak, notes, harga_delivery, order_id, member_id, status)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO delivery (tujuan, jarak, notes, harga_delivery, order_id, member_id, employee_id, status)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
         values = (
             data.get("tujuan"),
@@ -42,6 +52,7 @@ class Database:
             harga_delivery,
             data.get("order_id"),
             data.get("member_id"),
+            data.get("employee_id", None),
             data.get("status", "pending")
         )
 
@@ -77,6 +88,7 @@ class Database:
                 harga_delivery = %s,
                 order_id = %s,
                 member_id = %s,
+                employee_id = %s,
                 status = %s
             WHERE id = %s
         """
@@ -87,15 +99,36 @@ class Database:
             harga_delivery,
             data.get("order_id"),
             data.get("member_id"),
+            data.get("employee_id", None),
             data.get("status"),
             delivery_id
         )
         cursor.execute(sql, values)
         return {"message": "Delivery updated", "id": delivery_id}
     
+    def append_employee(self, delivery_id, employee_id):
+        cursor = self.conn.cursor()
+        cursor.execute(
+            "UPDATE delivery SET employee_id = %s WHERE id = %s",
+            (employee_id, delivery_id)
+        )
+        return {"message": "Employee added to delivery", "id": delivery_id}
+    
+    def get_delivery_by_employee_id(self, employee_id):
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM delivery WHERE employee_id = %s", (employee_id,))
+        return cursor.fetchall()
+    
     def delete_delivery(self, delivery_id):
         cursor = self.conn.cursor()
         cursor.execute("DELETE FROM delivery WHERE id = %s", (delivery_id,))
         return {"message": "Delivery deleted", "id": delivery_id}
     
+    def search_delivery(self, query):
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(
+            "SELECT * FROM delivery WHERE tujuan LIKE %s OR CAST(member_id AS CHAR) LIKE %s OR CAST(employee_id AS CHAR) LIKE %s OR CAST(order_id AS CHAR) LIKE %s OR CAST(id AS CHAR) LIKE %s",
+            ['%' + query + '%'] * 5
+        )
+        return cursor.fetchall()
     
