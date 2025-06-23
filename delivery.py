@@ -32,7 +32,7 @@ class DeliveryService:
         return self.database.append_employee(delivery_id, employee_id)
     
     @rpc
-    def fetch_all_delivery_by_employee_id(self, employee_id):
+    def get_delivery_by_employee_id(self, employee_id):
         return self.database.get_delivery_by_employee_id(employee_id)
 
     @rpc

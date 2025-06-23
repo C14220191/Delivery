@@ -63,8 +63,6 @@ class GatewayService:
         except Exception as e:
             return 500, json.dumps({"error": str(e)})
 
-
-
     @http('POST', '/delivery')
     def create_delivery(self, request):
         try:
@@ -147,7 +145,7 @@ class GatewayService:
         except Exception as e:
             return 500, json.dumps({"error": str(e)})
         
-    @http('GET','/delivery/append')
+    @http('POST','/delivery/append')
     def append_employee(self, request):
         try:
             body = json.loads(request.get_data(as_text=True))
